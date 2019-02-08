@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //For permission
         Dexter.withActivity(this)
                 .withPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.ACCESS_FINE_LOCATION)
@@ -99,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 tabLayout=(TabLayout) findViewById(R.id.tabs);
                 tabLayout.setupWithViewPager(viewPager);
 
+                Log.d("Location",locationResult.getLastLocation().getLatitude()+"-" +locationResult.getLastLocation().getLongitude());
             }
         };
     }
