@@ -18,4 +18,9 @@ public interface IOWM {
                                                                  @Query("lon") String lon,
                                                                  @Query("appid") String appid,
                                                                  @Query("units") String unit);
+
+    @GET("weather")
+    Observable<WeatherResult> getWeatherByCityName(@Query("q") String cityName,
+                                                 @Query("appid") String appid,
+                                                 @Query("units") String unit);
 }
