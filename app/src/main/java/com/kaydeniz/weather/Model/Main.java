@@ -3,8 +3,8 @@ package com.kaydeniz.weather.Model;
 public class Main {
 
     private double temp;
-    private double pressure ;
-    private int humidity ;
+    private float pressure ;
+    private float humidity ;
     private double temp_min;
     private double temp_max;
 
@@ -19,19 +19,19 @@ public class Main {
         this.temp = temp;
     }
 
-    public double getPressure() {
+    public float getPressure() {
         return pressure;
     }
 
-    public void setPressure(double pressure) {
+    public void setPressure(float pressure) {
         this.pressure = pressure;
     }
 
-    public int getHumidity() {
+    public float getHumidity() {
         return humidity;
     }
 
-    public void setHumidity(int humidity) {
+    public void setHumidity(float humidity) {
         this.humidity = humidity;
     }
 

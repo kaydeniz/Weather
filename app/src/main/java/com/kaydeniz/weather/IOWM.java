@@ -1,5 +1,6 @@
 package com.kaydeniz.weather;
 
+import com.kaydeniz.weather.Model.WeatherForecastResult;
 import com.kaydeniz.weather.Model.WeatherResult;
 
 import io.reactivex.Observable;
@@ -12,4 +13,9 @@ public interface IOWM {
                                                  @Query("lon") String lon,
                                                  @Query("appid") String appid,
                                                  @Query("units") String unit);
+    @GET("forecast")
+    Observable<WeatherForecastResult> getForecastWeatherByLatLng(@Query("lat") String lat,
+                                                                 @Query("lon") String lon,
+                                                                 @Query("appid") String appid,
+                                                                 @Query("units") String unit);
 }

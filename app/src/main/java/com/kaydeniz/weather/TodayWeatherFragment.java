@@ -3,6 +3,7 @@ package com.kaydeniz.weather;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,15 +88,26 @@ public class TodayWeatherFragment extends Fragment {
                                 Picasso.get().load(new StringBuilder("https://openweathermap.org/img/w/").
                                         append(weatherResult.getWeather().get(0).getIcon()).append(".png").toString()).into(weatherImage);
 
-                                tvCityName.setText(weatherResult.getName());
-                                tvDescp.setText(new StringBuilder("Weather in ").append(weatherResult.getName()).toString());
+                                tvCityName.setText(weatherResult.getName()+", "+weatherResult.getSys().getCountry());
+                                tvDescp.setText(weatherResult.getWeather().get(0).getDescription());
+                                tvWind.setText(String.valueOf(weatherResult.getWind().getSpeed()));
                                 tvTemp.setText(new StringBuilder(String.valueOf(weatherResult.getMain().getTemp())).append("°C").toString());
                                 tvDateTime.setText(OWM.convertUnixToDate(weatherResult.getDt()));
                                 tvPressure.setText(new StringBuilder(String.valueOf(weatherResult.getMain().getPressure())).append(" hpa").toString());
                                 tvHumidty.setText(new StringBuilder(String.valueOf(weatherResult.getMain().getHumidity())).append(" %").toString());
                                 tvSunrise.setText(OWM.convertUnixToHour(weatherResult.getSys().getSunrise()));
                                 tvSunset.setText(OWM.convertUnixToHour(weatherResult.getSys().getSunset()));
-                                tvCoord.setText(new StringBuilder("[").append(weatherResult.getCoord().toString()).append("]").toString());
+                                tvCoord.setText(new StringBuilder(weatherResult.getCoord().toString()).toString());
+
+                                Log.d("Country",weatherResult.getSys().getCountry());
+                                Log.d("ID",String.valueOf(weatherResult.getSys().getId()));
+                                Log.d("Sıcaklık Max",String.valueOf(weatherResult.getMain().getTemp_max()));
+                                Log.d("Sıcaklık Min",String.valueOf(weatherResult.getMain().getTemp_min()));
+                                Log.d("Description",weatherResult.getWeather().get(0).getDescription());
+                                Log.d("Getweather Id",String.valueOf(weatherResult.getWeather().get(0).getId()));
+                                Log.d("Main",weatherResult.getWeather().get(0).getMain());
+
+
 
                                 panel.setVisibility(View.VISIBLE);
                                 progressBar.setVisibility(View.GONE);
@@ -109,6 +121,12 @@ public class TodayWeatherFragment extends Fragment {
                         })
 
                 );
+    }
+
+    @Override
+    public void onStop() {
+        compositeDisposable.clear();
+        super.onStop();
     }
 
 }

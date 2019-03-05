@@ -66,31 +66,31 @@
             android:textStyle="bold" />
 
         <TableLayout
-            android:background="@drawable/border"
-            android:layout_marginTop="10dp"
-            android:stretchColumns="*"
-            android:padding="16dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/border"
+            android:padding="16dp"
+            android:stretchColumns="*">
 
             <TableRow
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="Wind"
-                    android:background="@drawable/cell"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"/>
+                    android:background="@drawable/cell"
+                    android:text="Wind" />
 
                 <TextView
                     android:id="@+id/tvWind"
-                    android:layout_marginLeft="8dp"
-                    android:layout_column="1"
-                    android:text="Speed:1"
-                    android:background="@drawable/cell"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"/>
+                    android:layout_column="1"
+                    android:layout_marginLeft="8dp"
+                    android:background="@drawable/cell"
+                    android:text="Speed:1" />
 
             </TableRow>
 
@@ -99,19 +99,19 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="Pressure"
-                    android:background="@drawable/cell"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"/>
+                    android:background="@drawable/cell"
+                    android:text="Pressure" />
 
                 <TextView
                     android:id="@+id/tvPressure"
-                    android:layout_marginLeft="8dp"
-                    android:layout_column="1"
-                    android:text="103,5 pa"
-                    android:background="@drawable/cell"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"/>
+                    android:layout_column="1"
+                    android:layout_marginLeft="8dp"
+                    android:background="@drawable/cell"
+                    android:text="103,5 pa" />
 
             </TableRow>
 
@@ -120,19 +120,19 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="Humidty"
-                    android:background="@drawable/cell"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"/>
+                    android:background="@drawable/cell"
+                    android:text="Humidty" />
 
                 <TextView
                     android:id="@+id/tvHumidty"
-                    android:layout_marginLeft="8dp"
-                    android:layout_column="1"
-                    android:text="100%"
-                    android:background="@drawable/cell"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"/>
+                    android:layout_column="1"
+                    android:layout_marginLeft="8dp"
+                    android:background="@drawable/cell"
+                    android:text="100%" />
 
             </TableRow>
 
@@ -141,19 +141,19 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="Sunrise"
-                    android:background="@drawable/cell"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"/>
+                    android:background="@drawable/cell"
+                    android:text="Sunrise" />
 
                 <TextView
                     android:id="@+id/tvSunrise"
-                    android:layout_marginLeft="8dp"
-                    android:layout_column="1"
-                    android:text="08.11"
-                    android:background="@drawable/cell"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"/>
+                    android:layout_column="1"
+                    android:layout_marginLeft="8dp"
+                    android:background="@drawable/cell"
+                    android:text="08.11" />
 
             </TableRow>
 
@@ -162,19 +162,19 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="Sunset"
-                    android:background="@drawable/cell"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"/>
+                    android:background="@drawable/cell"
+                    android:text="Sunset" />
 
                 <TextView
                     android:id="@+id/tvSunset"
-                    android:layout_marginLeft="8dp"
-                    android:layout_column="1"
-                    android:text="18.21"
-                    android:background="@drawable/cell"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"/>
+                    android:layout_column="1"
+                    android:layout_marginLeft="8dp"
+                    android:background="@drawable/cell"
+                    android:text="18.21" />
 
             </TableRow>
 
@@ -183,32 +183,31 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="Coord"
-                    android:background="@drawable/cell"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"/>
+                    android:background="@drawable/cell"
+                    android:text="Coord" />
 
                 <TextView
                     android:id="@+id/tvCoord"
-                    android:layout_marginLeft="8dp"
-                    android:layout_column="1"
-                    android:text="32.0, 21.5"
-                    android:background="@drawable/cell"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"/>
+                    android:layout_column="1"
+                    android:layout_marginLeft="8dp"
+                    android:background="@drawable/cell"
+                    android:text="32.0, 21.5" />
 
             </TableRow>
 
         </TableLayout>
 
     </LinearLayout>
-    
+
     <ProgressBar
         android:id="@+id/progressBar"
-        android:indeterminate="true"
-        android:layout_centerInParent="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />
+        android:layout_centerInParent="true"
+        android:indeterminate="true" />
 
 </RelativeLayout>
