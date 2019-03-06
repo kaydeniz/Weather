@@ -37,7 +37,20 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.github.mancj:MaterialSearchBar:0.8.2'
     implementation 'com.label305:asynctask:1.0.0'
+
+    //CircleImageView
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    //For GIF
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.16'
+
+    //ChartView for Humidty percentage
+    implementation 'com.timqi.sectorprogressview:library:2.0.1'
+
+    //Sunrise-Sunset
+    implementation 'com.github.tianma8023:SunriseSunsetView:0.0.2'
+
+
 
 
 }

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -54,14 +55,27 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder>{
 
         String name= cityArrayList.get(i).getName();
         Character firstLetter=name.charAt(0);
-        holder.tvHeaderCityName.setText(name);
+        String fL= String.valueOf(firstLetter);
 
-        if(firstLetter.equals('A')){
+        if(name.equals("+")){
+            holder.tvHeaderCityName.setText("Add City");
+
+            holder.tvLogo.setText(fL);
+        } else{
+            holder.tvHeaderCityName.setText(name);
+
+            holder.tvLogo.setText(fL);
+        }
+
+
+
+
+       /* if(firstLetter.equals('A')){
             Picasso.get().load(R.drawable.letter_a).fit().into(holder.cityImage);
         } else {
             Picasso.get().load(R.drawable.letter_b).fit().into(holder.cityImage);
         }
-
+*/
 
 
         /*holder.clLit.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +90,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder>{
         });*/
 
 
-        holder.cityImage.setOnClickListener(new View.OnClickListener() {
+        holder.llCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -98,17 +112,16 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder>{
 
         if(cIndex==i){
 
-            holder.cityImage.setAlpha(1f);
-            holder.cityImage.setBorderWidth(5);
+            holder.llCity.setAlpha(1f);
+            //holder.llCity.setBorderWidth(5);
             holder.tvHeaderCityName.setTypeface(Typeface.DEFAULT_BOLD);
         } else
         {
-            holder.cityImage.setAlpha(0.5f);
-            holder.cityImage.setBorderWidth(2);
+            holder.llCity.setAlpha(0.5f);
+            //holder.cityImage.setBorderWidth(2);
             holder.tvHeaderCityName.setTypeface(Typeface.DEFAULT);
 
         }
-
 
     }
 
@@ -121,16 +134,16 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        CircleImageView cityImage;
-        TextView tvHeaderCityName;
+        TextView tvHeaderCityName,tvLogo;
+        LinearLayout llCity;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            cityImage=itemView.findViewById(R.id.cityImage);
             tvHeaderCityName=itemView.findViewById(R.id.tvHeaderCityName);
-
+            tvLogo=itemView.findViewById(R.id.tvLogo);
+            llCity=itemView.findViewById(R.id.llCity);
         }
     }
 

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.kaydeniz.weather.Adapter.CityAdapter;
 import com.kaydeniz.weather.Model.City;
@@ -43,6 +45,10 @@ public class AnaActivity extends AppCompatActivity {
         City city3=new City();
         city3.setName("New York");
         cityArrayList.add(city3);
+
+        City city4=new City();
+        city4.setName("+");
+        cityArrayList.add(city4);
 
         adapter=new CityAdapter(getApplication(),cityArrayList);
         rvCity.setAdapter(adapter);
