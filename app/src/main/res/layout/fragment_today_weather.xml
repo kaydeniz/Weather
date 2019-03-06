@@ -7,7 +7,6 @@
     android:gravity="center_horizontal"
     tools:context=".TodayWeatherFragment">
 
-
     <LinearLayout
         android:id="@+id/panel"
         android:layout_width="wrap_content"
@@ -209,5 +208,15 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:indeterminate="true" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="62dp"
+        android:layout_marginBottom="46dp"
+        android:text="Button" />
 
 </RelativeLayout>
