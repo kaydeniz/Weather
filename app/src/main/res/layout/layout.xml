@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_img"
     android:theme="@style/Theme.AppCompat.NoActionBar"
+    android:id="@+id/coordinator"
     >
 
     <RelativeLayout
@@ -13,7 +14,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.25"
+        app:layout_constraintHeight_percent="0.22"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -35,6 +36,16 @@
             android:layout_alignParentRight="true"
             android:src="@drawable/ic_settings_white_24dp"
             android:layout_margin="10dp"/>
+
+        <ImageView
+            android:id="@+id/refresh"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_refresh_white_24dp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvCity"
@@ -136,11 +147,24 @@
             <RelativeLayout
                 android:id="@+id/rl5Days"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="230dp"
                 android:layout_below="@id/v1"
                 android:layout_margin="10dp">
 
+                <TextView
+                    android:id="@+id/tv5Days"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="5 Days Forecast"
+                    android:textColor="#FFF"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+
                 <android.support.v7.widget.RecyclerView
+                    android:layout_below="@+id/tv5Days"
                     android:id="@+id/rv5Days"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
@@ -187,7 +211,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:text="Direction "
+                    android:text="Direction   "
                     android:textColor="@color/colorWhite"
                     android:textSize="16sp" />
 
@@ -211,7 +235,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
-                    android:text="Speed "
+                    android:text="     Speed   "
                     android:textColor="@color/colorWhite"
                     android:textSize="16sp" />
 
@@ -223,7 +247,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/tvSpeed"
-                    android:text="28-32 km/h"
+                    android:text="28-32 m/s"
                     android:textColor="@color/colorWhite"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -324,8 +348,8 @@
                     app:fgColorEnd="#ff4800"
                     app:fgColorStart="#ffe400"
                     app:percent="55"
-                    app:startAngle="90"
-                    app:strokeWidth="21dp" />
+                    app:startAngle="0"
+                    app:strokeWidth="10dp" />
 
                 <TextView
                     android:id="@+id/tvHumidty"
@@ -366,7 +390,7 @@
             <RelativeLayout
                 android:id="@+id/rlSunset"
                 android:layout_width="match_parent"
-                android:layout_height="400dp"
+                android:layout_height="480dp"
                 android:layout_below="@id/v5"
                 android:layout_margin="10dp">
 
@@ -394,6 +418,41 @@
                     app:ssv_track_color="#FFF"
                     app:ssv_track_width="1.5dp" />
 
+                <TextView
+                    android:id="@+id/tvSunrise"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="07:12"
+                    android:textColor="#FFF"
+                    android:textSize="16sp"
+                    android:layout_below="@id/ssv"
+                    android:layout_alignParentStart="true"
+                     />
+
+                <TextView
+                    android:id="@+id/tvSunset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="19:15"
+                    android:textColor="#FFF"
+                    android:textSize="16sp"
+                    android:layout_below="@id/ssv"
+                    android:layout_alignParentEnd="true"
+                    />
+
+                <TextView
+                    android:id="@+id/tvInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="Data from OpenWeatherMap"
+                    android:textColor="#FFF"
+                    android:textSize="16sp"
+                    android:layout_below="@id/tvSunset"
+                    android:layout_centerHorizontal="true"
+                    />
             </RelativeLayout>
 
             <View

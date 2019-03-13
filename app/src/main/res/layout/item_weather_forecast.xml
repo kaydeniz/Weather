@@ -17,7 +17,7 @@
 
         <TextView
             android:id="@+id/tvDate"
-            android:textColor="@color/colorPrimary"
+            android:textColor="#4E86B0"
             android:textSize="20sp"
             android:textStyle="bold"
             android:text="Wednesday"
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:text="14 C"
-                android:textColor="@color/colorPrimary"
+                android:textColor="#4E86B0"
                 android:textSize="50sp"
                 android:textStyle="bold" />
 
@@ -50,7 +50,7 @@
 
         <TextView
             android:id="@+id/tvDescp"
-            android:textColor="@color/colorPrimary"
+            android:textColor="#4E86B0"
             android:textSize="18sp"
             android:text="Wednesday"
             android:layout_width="wrap_content"

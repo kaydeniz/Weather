@@ -1,5 +1,7 @@
 package com.kaydeniz.weather.Model;
 
+import java.util.List;
+
 public class Wind {
 
     private double speed;
@@ -32,4 +34,5 @@ public class Wind {
     public void setGust(double gust) {
         this.gust = gust;
     }
+
 }

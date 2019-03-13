@@ -11,6 +11,7 @@ public class OWM {
     public static Location currentLocation=null;
 
 
+
     public static String convertUnixToDate(long dt) {
         Date date=new Date(dt*1000L);
         SimpleDateFormat sdf= new SimpleDateFormat("HH:mm dd EEE MM yyyy");

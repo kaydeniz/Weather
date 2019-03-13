@@ -16,10 +16,6 @@ import java.util.List;
 
 public class AnaActivity extends AppCompatActivity {
 
-    private List<City> cityArrayList;
-    private RecyclerView rvCity;
-    private CityAdapter adapter;
-    private LinearLayoutManager manager;
 
 
 
@@ -28,31 +24,6 @@ public class AnaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout);
-
-        rvCity=findViewById(R.id.rvCity);
-        manager= new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        rvCity.setLayoutManager(manager);
-        cityArrayList=new ArrayList<>();
-
-        City city1=new City();
-        city1.setName("Isparta");
-        cityArrayList.add(city1);
-
-        City city2=new City();
-        city2.setName("Ankara");
-        cityArrayList.add(city2);
-
-        City city3=new City();
-        city3.setName("New York");
-        cityArrayList.add(city3);
-
-        City city4=new City();
-        city4.setName("+");
-        cityArrayList.add(city4);
-
-        adapter=new CityAdapter(getApplication(),cityArrayList);
-        rvCity.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
 
 
     }

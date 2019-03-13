@@ -57,6 +57,8 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder>{
         Character firstLetter=name.charAt(0);
         String fL= String.valueOf(firstLetter);
 
+
+
         if(name.equals("+")){
             holder.tvHeaderCityName.setText("Add City");
 
@@ -110,18 +112,25 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder>{
             }
         });
 
-        if(cIndex==i){
 
+        if(cityArrayList.get(i)==cityArrayList.get(0)){
             holder.llCity.setAlpha(1f);
             //holder.llCity.setBorderWidth(5);
             holder.tvHeaderCityName.setTypeface(Typeface.DEFAULT_BOLD);
-        } else
-        {
-            holder.llCity.setAlpha(0.5f);
-            //holder.cityImage.setBorderWidth(2);
-            holder.tvHeaderCityName.setTypeface(Typeface.DEFAULT);
-
         }
+
+            if (cIndex == i) {
+
+                holder.llCity.setAlpha(1f);
+                //holder.llCity.setBorderWidth(5);
+                holder.tvHeaderCityName.setTypeface(Typeface.DEFAULT_BOLD);
+            } else {
+                holder.llCity.setAlpha(0.5f);
+                //holder.cityImage.setBorderWidth(2);
+                holder.tvHeaderCityName.setTypeface(Typeface.DEFAULT);
+
+            }
+
 
     }
 

@@ -3,16 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="110dp"
-    android:layout_height="130dp"
+    android:layout_width="70dp"
+    android:layout_height="110dp"
     android:layout_marginRight="20dp"
     android:orientation="vertical"
     android:alpha="0.5"
     android:id="@+id/llCity">
 
     <RelativeLayout
-        android:layout_width="110dp"
-        android:layout_height="110dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:background="@drawable/rounded_button"
         >
 
@@ -21,11 +21,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="A"
             android:textColor="#FFF"
-            android:textSize="60sp"
+            android:textSize="50sp"
             android:textStyle="bold"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
@@ -37,8 +36,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:text="NAME"
         android:textColor="#FFF"
         android:textSize="14sp" />
