@@ -69,10 +69,6 @@ public class MainActivity extends AppCompatActivity {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
-    private Location currentLoc;
-
-    private CoordinatorLayout coordinatorLayout;
-    private ConstraintLayout coordinator;
 
     private ArrayList<String> savedList;
     private List<City> cityArrayList;
@@ -81,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayoutManager manager;
 
     private ImageView weatherType, refresh,settings;
-    private TextView tvTemp, tvDescp, tvDateTime, tvMaxTemp, tvMinTemp,
+    private TextView tvTemp, tvDescp, tvMaxTemp, tvMinTemp,
             tvDirectionResult, tvSpeedResult, tvPressureResult, tvHumidtyResult,tvSunrise,tvSunset,tvLastUpdate;
     private ColorfulRingProgressView crpv;
     private SunriseSunsetView ssv;
@@ -113,14 +109,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout);
 
-        coordinator = (ConstraintLayout) findViewById(R.id.coordinator);
 
         cityArrayList = new ArrayList<>();
         refresh = findViewById(R.id.refresh);
         weatherType = (ImageView) findViewById(R.id.weatherType);
         tvTemp = (TextView) findViewById(R.id.tvTemp);
         tvDescp = (TextView) findViewById(R.id.tvDescp);
-        tvDateTime = (TextView) findViewById(R.id.tvDateTime);
         tvLastUpdate=(TextView) findViewById(R.id.tvLastUpdate);
         tvDirectionResult = (TextView) findViewById(R.id.tvDirectionResult);
         tvSpeedResult = (TextView) findViewById(R.id.tvSpeedResult);
@@ -173,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
         String json = sharedPreferences.getString("cityName", null);
         Type type = new TypeToken<ArrayList<String>>() {}.getType();
         savedList = gson.fromJson(json, type);
+
 
 
         if (savedList == null) {
