@@ -50,7 +50,11 @@ dependencies {
     //Sunrise-Sunset
     implementation 'com.github.tianma8023:SunriseSunsetView:0.0.2'
 
+    //Eventbus
+    implementation 'org.greenrobot:eventbus:3.1.1'
 
+    //Gson
+    implementation 'com.google.code.gson:gson:2.8.5'
 
 
 }

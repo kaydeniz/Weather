@@ -13,7 +13,8 @@
         android:roundIcon="@drawable/ic_launcher_foreground"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AnaActivity"></activity>
+        <activity android:name=".SearchActivity"></activity>
+        <activity android:name=".AnaActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

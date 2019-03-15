@@ -1,7 +1,6 @@
 package com.kaydeniz.weather;
 
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -92,9 +91,6 @@ public class CityFragment extends Fragment {
 
         new LoadCities().execute();
 
-
-
-
         return view;
     }
 
@@ -163,8 +159,8 @@ public class CityFragment extends Fragment {
 
                 @Override
                 public void onSearchConfirmed(CharSequence text) {
-                    getWeatherInfo(text.toString());
 
+                    getWeatherInfo(text.toString());
                     searchBar.setLastSuggestions(listCity);
 
                 }
@@ -185,7 +181,7 @@ public class CityFragment extends Fragment {
     private void getWeatherInfo(String cityName) {
 
         compositeDisposable.add(service.getWeatherByCityName(cityName,
-                OWM.APP_ID,"metric").
+                General.APP_ID,"metric").
                 subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<WeatherResult>() {
                     @Override
@@ -198,11 +194,11 @@ public class CityFragment extends Fragment {
                         tvDescp.setText(weatherResult.getWeather().get(0).getDescription());
                         tvWind.setText(String.valueOf(weatherResult.getWind().getSpeed()));
                         tvTemp.setText(new StringBuilder(String.valueOf(weatherResult.getMain().getTemp())).append("°C").toString());
-                        tvDateTime.setText(OWM.convertUnixToDate(weatherResult.getDt()));
+                        tvDateTime.setText(General.convertUnixToDate(weatherResult.getDt()));
                         tvPressure.setText(new StringBuilder(String.valueOf(weatherResult.getMain().getPressure())).append(" hpa").toString());
                         tvHumidty.setText(new StringBuilder(String.valueOf(weatherResult.getMain().getHumidity())).append(" %").toString());
-                        tvSunrise.setText(OWM.convertUnixToHour(weatherResult.getSys().getSunrise()));
-                        tvSunset.setText(OWM.convertUnixToHour(weatherResult.getSys().getSunset()));
+                        tvSunrise.setText(General.convertUnixToHour(weatherResult.getSys().getSunrise()));
+                        tvSunset.setText(General.convertUnixToHour(weatherResult.getSys().getSunset()));
                         tvCoord.setText(new StringBuilder(weatherResult.getCoord().toString()).toString());
 
                         Log.d("Country",weatherResult.getSys().getCountry());

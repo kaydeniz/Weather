@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,11 @@ import android.widget.TextView;
 
 
 import com.kaydeniz.weather.Model.City;
+import com.kaydeniz.weather.Model.MessageEvent;
 import com.kaydeniz.weather.R;
 import com.squareup.picasso.Picasso;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -29,8 +33,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder>{
     private List<City> cityArrayList;
     private Context myContext;
 
-    private int cIndex=-1;
-
+    private int cIndex=0;
 
     public CityAdapter(Context myContext, List<City> cityArrayList) {
 
@@ -57,53 +60,49 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder>{
         Character firstLetter=name.charAt(0);
         String fL= String.valueOf(firstLetter);
 
+        if(i==0){
 
-
-        if(name.equals("+")){
-            holder.tvHeaderCityName.setText("Add City");
-
-            holder.tvLogo.setText(fL);
-        } else{
-            holder.tvHeaderCityName.setText(name);
+            holder.tvHeaderCityName.setText("Loc: "+name);
 
             holder.tvLogo.setText(fL);
-        }
 
-
-
-
-       /* if(firstLetter.equals('A')){
-            Picasso.get().load(R.drawable.letter_a).fit().into(holder.cityImage);
         } else {
-            Picasso.get().load(R.drawable.letter_b).fit().into(holder.cityImage);
-        }
-*/
 
 
-        /*holder.clLit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            if(name.equals("+")){
+                holder.tvHeaderCityName.setText("Add City");
 
-                Intent intent=new Intent(myContext, GalleryActivity.class);
-                intent.putExtra("cins",litArrayList.get(i).getCins());
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                myContext.startActivity(intent);
+                holder.tvLogo.setText(fL);
+            } else{
+
+                holder.tvHeaderCityName.setText(name);
+
+                holder.tvLogo.setText(fL);
             }
-        });*/
+        }
+
 
 
         holder.llCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                cIndex=i;
                 notifyDataSetChanged();
-
+                cIndex=i;
 
                 for (int k=0;k<cityArrayList.size();k++){
 
                     if(k==i){
                         cityArrayList.get(k).setChecked(true);
+
+                        //send chosen info to activiy with Eventbus
+                        MessageEvent event=new MessageEvent();
+                        event.setCityIndex(i);
+                        event.setCityName(cityArrayList.get(i).getName());
+                        event.setCoord(cityArrayList.get(i).getCoord());
+                        EventBus.getDefault().postSticky(event);
+
+
                     } else {
                         cityArrayList.get(k).setChecked(false);
                     }
@@ -113,24 +112,14 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder>{
         });
 
 
-        if(cityArrayList.get(i)==cityArrayList.get(0)){
-            holder.llCity.setAlpha(1f);
-            //holder.llCity.setBorderWidth(5);
-            holder.tvHeaderCityName.setTypeface(Typeface.DEFAULT_BOLD);
-        }
-
-            if (cIndex == i) {
+        if (cIndex == i) {
 
                 holder.llCity.setAlpha(1f);
-                //holder.llCity.setBorderWidth(5);
                 holder.tvHeaderCityName.setTypeface(Typeface.DEFAULT_BOLD);
             } else {
                 holder.llCity.setAlpha(0.5f);
-                //holder.cityImage.setBorderWidth(2);
                 holder.tvHeaderCityName.setTypeface(Typeface.DEFAULT);
-
             }
-
 
     }
 

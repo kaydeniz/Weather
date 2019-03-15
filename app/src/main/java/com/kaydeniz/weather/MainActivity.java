@@ -1,29 +1,23 @@
 package com.kaydeniz.weather;
 
 import android.Manifest;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.CircularProgressDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,21 +30,28 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.kaydeniz.weather.Adapter.CityAdapter;
-import com.kaydeniz.weather.Adapter.ViewPagerAdapter;
 import com.kaydeniz.weather.Adapter.WeatherForecastAdapter;
 import com.kaydeniz.weather.Model.City;
+import com.kaydeniz.weather.Model.Coord;
+import com.kaydeniz.weather.Model.MessageEvent;
+import com.kaydeniz.weather.Model.Weather;
 import com.kaydeniz.weather.Model.WeatherForecastResult;
 import com.kaydeniz.weather.Model.WeatherResult;
 import com.squareup.picasso.Picasso;
 import com.timqi.sectorprogressview.ColorfulRingProgressView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
+import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -73,17 +74,19 @@ public class MainActivity extends AppCompatActivity {
     private CoordinatorLayout coordinatorLayout;
     private ConstraintLayout coordinator;
 
-
+    private ArrayList<String> savedList;
     private List<City> cityArrayList;
     private RecyclerView rvCity,rv5Days;
     private CityAdapter adapter;
     private LinearLayoutManager manager;
 
-    private ImageView weatherType, refresh;
+    private ImageView weatherType, refresh,search;
     private TextView tvTemp, tvDescp, tvDateTime, tvMaxTemp, tvMinTemp,
-            tvDirectionResult, tvSpeedResult, tvPressureResult, tvHumidtyResult,tvSunrise,tvSunset;
+            tvDirectionResult, tvSpeedResult, tvPressureResult, tvHumidtyResult,tvSunrise,tvSunset,tvLastUpdate;
     private ColorfulRingProgressView crpv;
     private SunriseSunsetView ssv;
+    private Coord tempCord=new Coord();
+    WeatherResult wr=new WeatherResult();
 
     CompositeDisposable compositeDisposable;
     IOWM service;
@@ -112,15 +115,14 @@ public class MainActivity extends AppCompatActivity {
 
         coordinator = (ConstraintLayout) findViewById(R.id.coordinator);
 
-        rvCity = findViewById(R.id.rvCity);
-        manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        rvCity.setLayoutManager(manager);
         cityArrayList = new ArrayList<>();
         refresh = findViewById(R.id.refresh);
+        search=findViewById(R.id.search);
         weatherType = (ImageView) findViewById(R.id.weatherType);
         tvTemp = (TextView) findViewById(R.id.tvTemp);
         tvDescp = (TextView) findViewById(R.id.tvDescp);
         tvDateTime = (TextView) findViewById(R.id.tvDateTime);
+        tvLastUpdate=(TextView) findViewById(R.id.tvLastUpdate);
         tvDirectionResult = (TextView) findViewById(R.id.tvDirectionResult);
         tvSpeedResult = (TextView) findViewById(R.id.tvSpeedResult);
         tvHumidtyResult = (TextView) findViewById(R.id.tvHumidtyResult);
@@ -132,7 +134,12 @@ public class MainActivity extends AppCompatActivity {
         crpv=(ColorfulRingProgressView) findViewById(R.id.crpv);
         ssv=(SunriseSunsetView) findViewById(R.id.ssv);
 
-        //For forecast weather
+        loadData();
+
+        rvCity = findViewById(R.id.rvCity);
+        rvCity.setHasFixedSize(true);
+        manager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rvCity.setLayoutManager(manager);
 
         rv5Days=findViewById(R.id.rv5Days);
         rv5Days.setHasFixedSize(true);
@@ -143,17 +150,46 @@ public class MainActivity extends AppCompatActivity {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cityArrayList.clear();
                 getLocationPermission();
             }
         });
 
+
+
+    }
+
+    private void loadData() {
+        SharedPreferences sharedPreferences = getSharedPreferences("shared preferences", MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = sharedPreferences.getString("cityName", null);
+        Type type = new TypeToken<ArrayList<String>>() {}.getType();
+        savedList = gson.fromJson(json, type);
+
+
+
+        if (savedList == null) {
+            savedList = new ArrayList<>();
+        }
     }
 
 
+    private int roundToInt(double temp) {
+
+        double dAbs = Math.abs(temp);
+        int i = (int) dAbs;
+        double result = dAbs - (double) i;
+        if(result<0.5){
+            return temp<0 ? -i : i;
+        }else{
+            return temp<0 ? -(i+1) : i+1;
+        }
+    }
+
     private void getWeather() {
-        compositeDisposable.add(service.getWeatherByLatLng(String.valueOf(OWM.currentLocation.getLatitude()),
-                String.valueOf(OWM.currentLocation.getLongitude()),
-                OWM.APP_ID, "metric").
+        compositeDisposable.add(service.getWeatherByLatLng(String.valueOf(General.currentLocation.getLatitude()),
+                String.valueOf(General.currentLocation.getLongitude()),
+                General.APP_ID, "metric").
                 subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<WeatherResult>() {
                     @Override
@@ -163,33 +199,30 @@ public class MainActivity extends AppCompatActivity {
                                 append(weatherResult.getWeather().get(0).getIcon()).append(".png").toString()).into(weatherType);
 
                         City city0 = new City();
-                        city0.setName("Loc: "+weatherResult.getName());
-                        city0.setChecked(true);
+                        city0.setName(weatherResult.getName());
+                        city0.setCoord(weatherResult.getCoord());
                         cityArrayList.add(city0);
 
-                        City city1 = new City();
-                        city1.setName("Isparta");
-                        cityArrayList.add(city1);
 
-                        City city2 = new City();
-                        city2.setName("Ankara");
-                        cityArrayList.add(city2);
+                        for (int k=0;k<savedList.size();k++){
+                            City temp=new City();
+                            temp.setName(savedList.get(k));
+                            cityArrayList.add(temp);
+                            Log.d("koordinat",String.valueOf(temp.getCoord()));
 
-                        City city3 = new City();
-                        city3.setName("New York");
-                        cityArrayList.add(city3);
+                        }
 
-                        City city4 = new City();
-                        city4.setName("+");
-                        cityArrayList.add(city4);
+                        City cityAdd = new City();
+                        cityAdd.setName("+");
+                        cityArrayList.add(cityAdd);
 
                         adapter = new CityAdapter(getApplication(), cityArrayList);
                         rvCity.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
 
-                        tvTemp.setText(new StringBuilder(String.valueOf(weatherResult.getMain().getTemp())).append("°C").toString());
-                        tvMaxTemp.setText(new StringBuilder(String.valueOf(weatherResult.getMain().getTemp_max())).append("°C / ").toString());
-                        tvMinTemp.setText(new StringBuilder(String.valueOf(weatherResult.getMain().getTemp_min())).append("°C").toString());
+                        tvTemp.setText(new StringBuilder(String.valueOf(roundToInt(weatherResult.getMain().getTemp()))).append("°C").toString());
+                        tvMaxTemp.setText(new StringBuilder(String.valueOf(roundToInt(weatherResult.getMain().getTemp_max()))).append("°C / ").toString());
+                        tvMinTemp.setText(new StringBuilder(String.valueOf(roundToInt(weatherResult.getMain().getTemp_min()))).append("°C").toString());
                         tvDescp.setText(weatherResult.getWeather().get(0).getDescription());
                         tvSpeedResult.setText(String.valueOf(weatherResult.getWind().getSpeed()));
                         tvDirectionResult.setText(degToName(weatherResult.getWind().getDeg()));
@@ -197,14 +230,77 @@ public class MainActivity extends AppCompatActivity {
                         tvHumidtyResult.setText(new StringBuilder(String.valueOf(weatherResult.getMain().getHumidity())).append(" %").toString());
                         crpv.setPercent(weatherResult.getMain().getHumidity());
 
-                        tvSunrise.setText(OWM.convertUnixToHour(weatherResult.getSys().getSunrise()));
-                        tvSunset.setText(OWM.convertUnixToHour(weatherResult.getSys().getSunset()));
+                        tvSunrise.setText(General.convertUnixToHour(weatherResult.getSys().getSunrise()));
+                        tvSunset.setText(General.convertUnixToHour(weatherResult.getSys().getSunset()));
 
                         int sunriseHour,sunriseMin,sunsetHour,sunsetMin;
                         String sunriseHourS,sunsetHourS;
 
-                        sunriseHourS=OWM.convertUnixToHour(weatherResult.getSys().getSunrise());
-                        sunsetHourS=OWM.convertUnixToHour(weatherResult.getSys().getSunset());
+                        sunriseHourS= General.convertUnixToHour(weatherResult.getSys().getSunrise());
+                        sunsetHourS= General.convertUnixToHour(weatherResult.getSys().getSunset());
+
+                        String[] parts = sunriseHourS.split(":");
+                        String part1 = parts[0];
+                        String part2 = parts[1];
+
+                        String[] partsSunset = sunsetHourS.split(":");
+                        String part3 = parts[0];
+                        String part4 = parts[1];
+
+                        sunriseHour=Integer.parseInt(part1);
+                        sunriseMin=Integer.parseInt(part2);
+                        sunsetHour=Integer.parseInt(part3);
+                        sunsetMin=Integer.parseInt(part4);
+
+                        ssv.setSunriseTime(new Time(sunriseHour,sunriseMin));
+                        ssv.setSunsetTime(new Time(sunsetHour,sunsetMin));
+                        ssv.animate().setDuration(20000);
+                        ssv.animate().setStartDelay(30000);
+                        ssv.setLabelTextSize(0);
+                        ssv.startAnimate();
+
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Toast.makeText(MainActivity.this, throwable.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                })
+
+        );
+    }
+
+    private void getWeatherByName(String cityName) {
+        compositeDisposable.add(service.getWeatherByCityName(cityName,
+                General.APP_ID, "metric").
+                subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<WeatherResult>() {
+                    @Override
+                    public void accept(WeatherResult weatherResult) throws Exception {
+
+                        Picasso.get().load(new StringBuilder("https://openweathermap.org/img/w/").
+                                append(weatherResult.getWeather().get(0).getIcon()).append(".png").toString()).into(weatherType);
+
+
+                        tvTemp.setText(new StringBuilder(String.valueOf(roundToInt(weatherResult.getMain().getTemp()))).append("°C").toString());
+                        tvMaxTemp.setText(new StringBuilder(String.valueOf(roundToInt(weatherResult.getMain().getTemp_max()))).append("°C / ").toString());
+                        tvMinTemp.setText(new StringBuilder(String.valueOf(roundToInt(weatherResult.getMain().getTemp_min()))).append("°C").toString());
+                        tvDescp.setText(weatherResult.getWeather().get(0).getDescription());
+                        tvSpeedResult.setText(String.valueOf(weatherResult.getWind().getSpeed()));
+                        tvDirectionResult.setText(degToName(weatherResult.getWind().getDeg()));
+                        tvPressureResult.setText(new StringBuilder(String.valueOf(weatherResult.getMain().getPressure())).append(" hpa").toString());
+                        tvHumidtyResult.setText(new StringBuilder(String.valueOf(weatherResult.getMain().getHumidity())).append(" %").toString());
+                        crpv.setPercent(weatherResult.getMain().getHumidity());
+
+                        tvSunrise.setText(General.convertUnixToHour(weatherResult.getSys().getSunrise()));
+                        tvSunset.setText(General.convertUnixToHour(weatherResult.getSys().getSunset()));
+
+                        int sunriseHour,sunriseMin,sunsetHour,sunsetMin;
+                        String sunriseHourS,sunsetHourS;
+
+                        sunriseHourS= General.convertUnixToHour(weatherResult.getSys().getSunrise());
+                        sunsetHourS= General.convertUnixToHour(weatherResult.getSys().getSunset());
 
                         String[] parts = sunriseHourS.split(":");
                         String part1 = parts[0];
@@ -241,9 +337,28 @@ public class MainActivity extends AppCompatActivity {
     private void getForecastWeatherInfo() {
 
         compositeDisposable.add(service.getForecastWeatherByLatLng(
-                String.valueOf(OWM.currentLocation.getLatitude()),
-                String.valueOf(OWM.currentLocation.getLongitude()),
-                OWM.APP_ID,
+                String.valueOf(General.currentLocation.getLatitude()),
+                String.valueOf(General.currentLocation.getLongitude()),
+                General.APP_ID,
+                "metric").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<WeatherForecastResult>() {
+                    @Override
+                    public void accept(WeatherForecastResult weatherForecastResult) throws Exception {
+                        displayForecastWeather(weatherForecastResult);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+
+                    }
+                })
+        );
+    }
+
+    private void getForecastWeatherInfoByCityName(String cityName) {
+
+        compositeDisposable.add(service.getForecastWeatherCityName(cityName,
+                General.APP_ID,
                 "metric").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<WeatherForecastResult>() {
                     @Override
@@ -266,7 +381,6 @@ public class MainActivity extends AppCompatActivity {
         rv5Days.setAdapter(adapter);
 
     }
-
 
     private String degToName(double deg) {
 
@@ -291,6 +405,11 @@ public class MainActivity extends AppCompatActivity {
         } else {
             ActivityCompat.requestPermissions(MainActivity.this, permission, LOCATION_PERMISSION_REQUEST_CODE);
         }
+
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+        Date date = new Date();
+        final String time= dateFormat.format(date);
+        tvLastUpdate.setText("Last Update "+time);
     }
 
     @Override
@@ -346,7 +465,7 @@ public class MainActivity extends AppCompatActivity {
 
                             if (location != null) {
 
-                                OWM.currentLocation = new Location(currentLocation);
+                                General.currentLocation = new Location(currentLocation);
                                 Log.d("Lokasyon",String.valueOf(currentLocation.getLatitude())+"----"+String.valueOf(currentLocation.getLongitude()));
 
                                 getWeather();
@@ -382,7 +501,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLocationResult(LocationResult locationResult){
                 super.onLocationResult(locationResult);
-                OWM.currentLocation=locationResult.getLastLocation();
+                General.currentLocation=locationResult.getLastLocation();
 
                 Log.d("Location",locationResult.getLastLocation().getLatitude()+"-" +locationResult.getLastLocation().getLongitude());
             }
@@ -425,6 +544,30 @@ public class MainActivity extends AppCompatActivity {
         //getWeather();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onEvent(MessageEvent event) {
+        Log.d("chosenCity",event.getCityName());
+        Log.d("chosenCity",String.valueOf(event.getCityIndex()));
+
+        if(event.getCityName().equals("+")){
+            Intent in=new Intent(MainActivity.this,SearchActivity.class);
+            startActivity(in);
+        }else {
+            getWeatherByName(event.getCityName());
+            getForecastWeatherInfoByCityName(event.getCityName());
+        }
+    }
 
 }

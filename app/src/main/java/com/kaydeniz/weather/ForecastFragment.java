@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.kaydeniz.weather.Adapter.WeatherForecastAdapter;
 import com.kaydeniz.weather.Model.WeatherForecastResult;
 
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
@@ -66,9 +65,9 @@ public class ForecastFragment extends Fragment {
     private void getForecastWeatherInfo() {
 
         compositeDisposable.add(mService.getForecastWeatherByLatLng(
-                String.valueOf(OWM.currentLocation.getLatitude()),
-                        String.valueOf(OWM.currentLocation.getLongitude()),
-                                OWM.APP_ID,
+                String.valueOf(General.currentLocation.getLatitude()),
+                        String.valueOf(General.currentLocation.getLongitude()),
+                                General.APP_ID,
                                 "metric").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<WeatherForecastResult>() {
                     @Override

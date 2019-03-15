@@ -8,6 +8,11 @@ public class Coord {
     public Coord() {
     }
 
+    public Coord(double lat, double lon) {
+        this.lon = lon;
+        this.lat = lat;
+    }
+
     public double getLon() {
         return lon;
     }

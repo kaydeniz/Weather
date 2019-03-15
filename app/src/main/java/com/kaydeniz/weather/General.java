@@ -2,10 +2,13 @@ package com.kaydeniz.weather;
 
 import android.location.Location;
 
+import com.kaydeniz.weather.Model.City;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
-public class OWM {
+public class General {
 
     public static final String APP_ID="39926ed841202518c1e98da44002be8b";
     public static Location currentLocation=null;

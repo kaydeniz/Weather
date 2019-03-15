@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.kaydeniz.weather.Model.WeatherForecastResult;
-import com.kaydeniz.weather.OWM;
+import com.kaydeniz.weather.General;
 import com.kaydeniz.weather.R;
 import com.squareup.picasso.Picasso;
 
@@ -37,9 +37,9 @@ public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecast
         Picasso.get().load(new StringBuilder("https://openweathermap.org/img/w/").
                 append(weatherForecastResult.list.get(position).weather.get(0).getIcon()).append(".png").toString()).into(holder.weatherImage);
 
-        holder.tvDate.setText(new StringBuilder(OWM.convertUnixToDate(weatherForecastResult.list.get(position).dt)));
+        holder.tvDate.setText(new StringBuilder(General.convertUnixToDate(weatherForecastResult.list.get(position).dt)));
         holder.tvDescp.setText(new StringBuilder(weatherForecastResult.list.get(position).weather.get(0).getDescription()));
-        holder.tvTemp.setText(new StringBuilder(String.valueOf(weatherForecastResult.list.get(position).main.getTemp())).append("°C"));
+        holder.tvTemp.setText(new StringBuilder(String.valueOf(roundToInt(weatherForecastResult.list.get(position).main.getTemp()))).append("°C"));
 
 
 
@@ -63,6 +63,18 @@ public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecast
             tvDescp=itemView.findViewById(R.id.tvDescp);
             weatherImage=itemView.findViewById(R.id.weatherImage);
 
+        }
+    }
+
+    private int roundToInt(double temp) {
+
+        double dAbs = Math.abs(temp);
+        int i = (int) dAbs;
+        double result = dAbs - (double) i;
+        if(result<0.5){
+            return temp<0 ? -i : i;
+        }else{
+            return temp<0 ? -(i+1) : i+1;
         }
     }
 }
