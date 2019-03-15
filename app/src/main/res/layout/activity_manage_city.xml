@@ -5,13 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingsActivity"
-    android:background="@drawable/background_img">
+    android:background="@drawable/background_img"
+    android:theme="@style/AppTheme"
+    android:fitsSystemWindows="true">
 
     <ImageView
         android:id="@+id/ivBackManageCity"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="30dp"
         android:src="@drawable/ic_arrow_back_white_24dp"
         />
 
@@ -20,7 +25,10 @@
         android:layout_height="30dp"
         android:layout_toRightOf="@+id/ivBackManageCity"
         android:text="Manage Cities"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="30dp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"
         android:textSize="20sp"

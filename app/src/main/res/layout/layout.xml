@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_img"
-    android:theme="@style/Theme.AppCompat.NoActionBar"
-    android:id="@+id/coordinator"
+    android:theme="@style/AppTheme"
+    android:fitsSystemWindows="true"
     >
 
     <RelativeLayout
+        android:layout_marginTop="30dp"
         android:id="@+id/relativeLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -22,7 +23,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Weather Monster"
+            android:text="Weather Circle"
             android:layout_margin="10dp"
             android:textStyle="bold"
             android:textSize="18sp"
@@ -402,7 +403,7 @@
             <RelativeLayout
                 android:id="@+id/rlSunset"
                 android:layout_width="match_parent"
-                android:layout_height="480dp"
+                android:layout_height="530dp"
                 android:layout_below="@id/v5"
                 android:layout_margin="10dp">
 

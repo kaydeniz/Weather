@@ -4,18 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity">
+    tools:context=".SearchActivity"
+    android:theme="@style/AppTheme"
+    android:fitsSystemWindows="true">
 
+    <RelativeLayout
+        android:id="@+id/rlSearch"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="0dp"
+        tools:ignore="MissingConstraints"
+        android:background="@color/colorGrey"></RelativeLayout>
 
     <com.mancj.materialsearchbar.MaterialSearchBar
         android:id="@+id/searchBar"
         style="@style/MaterialSearchBarLight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rlSearch"
         app:mt_hint="City Name..."
         app:mt_speechMode="false"></com.mancj.materialsearchbar.MaterialSearchBar>
 
