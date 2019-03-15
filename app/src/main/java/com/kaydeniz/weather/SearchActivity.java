@@ -50,6 +50,8 @@ public class SearchActivity extends AppCompatActivity {
     private String city;
     private TextView tvSearch;
     private ProgressBar pbSearch;
+    private String lastIndex;
+    private int lastIndexInt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +114,6 @@ public class SearchActivity extends AppCompatActivity {
         String jSon= gson.toJson(savedList);
         editor.putString("cityName",jSon);
         editor.commit();
-
     }
 
     private void loadData() {

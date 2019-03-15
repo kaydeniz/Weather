@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
     private CityAdapter adapter;
     private LinearLayoutManager manager;
 
-    private ImageView weatherType, refresh,search;
+    private ImageView weatherType, refresh,settings;
     private TextView tvTemp, tvDescp, tvDateTime, tvMaxTemp, tvMinTemp,
             tvDirectionResult, tvSpeedResult, tvPressureResult, tvHumidtyResult,tvSunrise,tvSunset,tvLastUpdate;
     private ColorfulRingProgressView crpv;
@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
 
         cityArrayList = new ArrayList<>();
         refresh = findViewById(R.id.refresh);
-        search=findViewById(R.id.search);
         weatherType = (ImageView) findViewById(R.id.weatherType);
         tvTemp = (TextView) findViewById(R.id.tvTemp);
         tvDescp = (TextView) findViewById(R.id.tvDescp);
@@ -133,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
         tvSunset = (TextView) findViewById(R.id.tvSunset);
         crpv=(ColorfulRingProgressView) findViewById(R.id.crpv);
         ssv=(SunriseSunsetView) findViewById(R.id.ssv);
+        settings=(ImageView) findViewById(R.id.settings);
 
         loadData();
 
@@ -155,6 +155,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in=new Intent(MainActivity.this,SettingsActivity.class);
+                startActivity(in);
+            }
+        });
+
 
 
     }
@@ -165,7 +173,6 @@ public class MainActivity extends AppCompatActivity {
         String json = sharedPreferences.getString("cityName", null);
         Type type = new TypeToken<ArrayList<String>>() {}.getType();
         savedList = gson.fromJson(json, type);
-
 
 
         if (savedList == null) {
