@@ -83,7 +83,7 @@
                     android:id="@+id/weatherType"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_centerVertical="true"
+                    android:layout_marginTop="20dp"
                     android:layout_marginLeft="10dp"
                     android:src="@drawable/random" />
 
@@ -92,47 +92,62 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignTop="@+id/weatherType"
-                    android:layout_centerHorizontal="true"
+                    android:layout_toRightOf="@id/weatherType"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginLeft="10dp"
-                    android:text="14 °C"
+                    android:gravity="center"
+                    android:text=" °C"
                     android:textColor="@color/colorWhite"
-                    android:textSize="50sp"
+                    android:textSize="75sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tvDescp"
-                    android:layout_width="wrap_content"
+                    android:layout_width="100dp"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tvTemp"
-                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/weatherType"
                     android:layout_marginLeft="10dp"
-                    android:text="Sunny"
+                    android:text="type"
+                    android:gravity="center"
                     android:textColor="@color/colorWhite"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvMaxTemp"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tvDescp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="10dp"
-                    android:text="18°C / "
-                    android:textColor="@color/colorWhite"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/tvTemp"
+                    android:layout_toRightOf="@+id/tvDescp"
+                    android:gravity="center"
+                    android:layout_alignParentEnd="true">
 
-                <TextView
-                    android:id="@+id/tvMinTemp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tvDescp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_toRightOf="@id/tvMaxTemp"
-                    android:text="9°C"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="16sp" />
+                    <TextView
+                        android:id="@+id/tvMaxTemp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/weatherType"
+                        android:layout_below="@id/tvTemp"
+                        android:layout_marginLeft="10dp"
+                        android:text="max°C / "
+                        android:textColor="@color/colorWhite"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvMinTemp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvDescp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_toRightOf="@id/tvMaxTemp"
+                        android:text="min°C"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+
 
                 <TextView
                     android:id="@+id/tvLastUpdate"
@@ -335,11 +350,12 @@
                 android:alpha="0.5"
                 android:background="#FFF" />
 
+
             <RelativeLayout
                 android:id="@+id/rlHumidty"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_below="@+id/v4"
+                android:layout_below="@+id/adView"
                 android:layout_margin="10dp">
 
                 <TextView
@@ -478,8 +494,20 @@
                 android:alpha="0.5"
                 android:background="#FFF" />
 
+            <com.google.android.gms.ads.AdView
+                android:layout_below="@id/v4"
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-7950548692452409/7873404134">
+            </com.google.android.gms.ads.AdView>
 
         </RelativeLayout>
+
+
 
     </android.support.v4.widget.NestedScrollView>
 

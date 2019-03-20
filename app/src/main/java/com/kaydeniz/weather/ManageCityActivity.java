@@ -68,10 +68,6 @@ public class ManageCityActivity extends AppCompatActivity {
         Type type = new TypeToken<ArrayList<String>>() {}.getType();
         savedList = gson.fromJson(json, type);
 
-        Log.d("listeJson",json);
-        Log.d("listeType",String.valueOf(type));
-
-
 
         if (savedList == null) {
             savedList = new ArrayList<>();

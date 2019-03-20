@@ -26,6 +26,9 @@ import android.widget.Toast;
 
 import com.github.tianma8023.model.Time;
 import com.github.tianma8023.ssv.SunriseSunsetView;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -87,6 +90,7 @@ public class MainActivity extends AppCompatActivity {
     private Coord tempCord=new Coord();
     WeatherResult wr=new WeatherResult();
 
+    private AdView mAdView;
     CompositeDisposable compositeDisposable;
     IOWM service;
 
@@ -117,6 +121,13 @@ public class MainActivity extends AppCompatActivity {
             w.setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
 
+        // Sample AdMob app ID: ca-app-pub-3940256099942544~3347511713
+        MobileAds.initialize(this, "ca-app-pub-7950548692452409~9905505254");
+
+
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         cityArrayList = new ArrayList<>();
         refresh = findViewById(R.id.refresh);
@@ -137,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
         settings=(ImageView) findViewById(R.id.settings);
 
         loadData();
+
+        Log.d("naberlen","dfusdh");
 
         rvCity = findViewById(R.id.rvCity);
         rvCity.setHasFixedSize(true);
@@ -206,7 +219,8 @@ public class MainActivity extends AppCompatActivity {
                     public void accept(WeatherResult weatherResult) throws Exception {
 
                         Picasso.get().load(new StringBuilder("https://openweathermap.org/img/w/").
-                                append(weatherResult.getWeather().get(0).getIcon()).append(".png").toString()).into(weatherType);
+                                append(weatherResult.getWeather().get(0).getIcon()).append(".png").toString()).
+                                placeholder(R.drawable.placeholder).into(weatherType);
 
                         City city0 = new City();
                         city0.setName(weatherResult.getName());
@@ -254,8 +268,8 @@ public class MainActivity extends AppCompatActivity {
                         String part2 = parts[1];
 
                         String[] partsSunset = sunsetHourS.split(":");
-                        String part3 = parts[0];
-                        String part4 = parts[1];
+                        String part3 = partsSunset[0];
+                        String part4 = partsSunset[1];
 
                         sunriseHour=Integer.parseInt(part1);
                         sunriseMin=Integer.parseInt(part2);
@@ -290,7 +304,8 @@ public class MainActivity extends AppCompatActivity {
                     public void accept(WeatherResult weatherResult) throws Exception {
 
                         Picasso.get().load(new StringBuilder("https://openweathermap.org/img/w/").
-                                append(weatherResult.getWeather().get(0).getIcon()).append(".png").toString()).into(weatherType);
+                                append(weatherResult.getWeather().get(0).getIcon()).append(".png").toString())
+                                .placeholder(R.drawable.placeholder).into(weatherType);
 
 
                         tvTemp.setText(new StringBuilder(String.valueOf(roundToInt(weatherResult.getMain().getTemp()))).append("°C").toString());
@@ -317,8 +332,8 @@ public class MainActivity extends AppCompatActivity {
                         String part2 = parts[1];
 
                         String[] partsSunset = sunsetHourS.split(":");
-                        String part3 = parts[0];
-                        String part4 = parts[1];
+                        String part3 = partsSunset[0];
+                        String part4 = partsSunset[1];
 
                         sunriseHour=Integer.parseInt(part1);
                         sunriseMin=Integer.parseInt(part2);
@@ -572,8 +587,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("chosenCity",String.valueOf(event.getCityIndex()));
 
         if(event.getCityName().equals("+")){
-            Intent in=new Intent(MainActivity.this,SearchActivity.class);
-            startActivity(in);
+
         }else {
             getWeatherByName(event.getCityName());
             getForecastWeatherInfoByCityName(event.getCityName());

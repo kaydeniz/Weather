@@ -4,13 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,13 +15,11 @@ import android.widget.TextView;
 import com.kaydeniz.weather.Model.City;
 import com.kaydeniz.weather.Model.MessageEvent;
 import com.kaydeniz.weather.R;
-import com.squareup.picasso.Picasso;
+import com.kaydeniz.weather.SearchActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder>{
 
@@ -81,8 +76,6 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder>{
             }
         }
 
-
-
         holder.llCity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,13 +88,18 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder>{
                     if(k==i){
                         cityArrayList.get(k).setChecked(true);
 
+                        if(i==(cityArrayList.size()-1)){
+                            Intent in=new Intent(myContext, SearchActivity.class);
+                            in.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            myContext.startActivity(in);
+                        }
+
                         //send chosen info to activiy with Eventbus
                         MessageEvent event=new MessageEvent();
                         event.setCityIndex(i);
                         event.setCityName(cityArrayList.get(i).getName());
                         event.setCoord(cityArrayList.get(i).getCoord());
                         EventBus.getDefault().postSticky(event);
-
 
                     } else {
                         cityArrayList.get(k).setChecked(false);

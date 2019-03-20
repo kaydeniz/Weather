@@ -35,7 +35,8 @@ public class WeatherForecastAdapter extends RecyclerView.Adapter<WeatherForecast
     public void onBindViewHolder(@NonNull WeatherForecastAdapter.MyViewHolder holder, int position) {
 
         Picasso.get().load(new StringBuilder("https://openweathermap.org/img/w/").
-                append(weatherForecastResult.list.get(position).weather.get(0).getIcon()).append(".png").toString()).into(holder.weatherImage);
+                append(weatherForecastResult.list.get(position).weather.get(0).getIcon()).append(".png").toString()).
+                placeholder(R.drawable.placeholder).into(holder.weatherImage);
 
         holder.tvDate.setText(new StringBuilder(General.convertUnixToDate(weatherForecastResult.list.get(position).dt)));
         holder.tvDescp.setText(new StringBuilder(weatherForecastResult.list.get(position).weather.get(0).getDescription()));
